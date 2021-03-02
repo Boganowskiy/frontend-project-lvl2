@@ -1,5 +1,5 @@
 import { Command } from 'commander';
-import getJsonsDiff from './getJsonsDiff.js';
+import getDiff from './getDiff.js';
 
 const program = new Command();
 
@@ -10,7 +10,7 @@ program
   .option('-f, --format [type]', 'output format')
   .usage('[options] <filepath1> <filepath2>')
   .action((filepath1, filepath2) => {
-    const diff = getJsonsDiff(filepath1, filepath2);
+    const diff = getDiff(filepath1, filepath2);
     console.log(diff);
   });
 

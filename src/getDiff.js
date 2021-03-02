@@ -1,5 +1,5 @@
 import getObjectsDiff from './getObjectDiff.js';
-import parseJSONFile from './parseJSON.js';
+import parseJSONFile from './parseFile.js';
 
 export default (json1, json2) => {
   const file1ContentObj = parseJSONFile(json1);
