@@ -45,11 +45,11 @@ const stylish = (ast) => {
     } = node;
     const currentIndent = prefixes.unchanged.repeat(depth);
     if (children) {
-      const childrenArr = children.flatMap((child) => iter(child, depth + 1)).join('');
-      return formatObj(currentIndent, status, key, oldValue, newValue, childrenArr);
+      return formatObj(currentIndent, status, key, oldValue, newValue, children.flatMap((child) => (
+        iter(child, depth + 1))).join(''));
     }
-    const oldV = (oldValue && Array.isArray(oldValue)) ? `[ ${oldValue} ]` : oldValue;
-    const newV = (newValue && Array.isArray(newValue)) ? `[ ${newValue} ]` : newValue;
+    const oldV = (Array.isArray(oldValue)) ? `[ ${oldValue} ]` : oldValue;
+    const newV = (Array.isArray(newValue)) ? `[ ${newValue} ]` : newValue;
     return formatPrimitive[status](currentIndent, key, oldV, newV);
   };
   const resArr = ast.map((child) => iter(child, 0));
