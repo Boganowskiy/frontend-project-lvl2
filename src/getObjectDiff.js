@@ -9,12 +9,12 @@ const processNode = (key, o1, o2, childrenDiffFunc) => {
     newValue,
   };
   if (Array.isArray(oldValue) || Array.isArray(newValue)) {
-    const status = (_.isEqual(oldValue, newValue)) ? 'unchanged' : 'changed';
+    const status = (_.isEqual(oldValue, newValue)) ? 'unchanged' : 'updated';
     node.status = status;
   } else if (!(_.has(o1, key)) || !(_.has(o2, key))) {
     const data = (!(_.has(o1, key)))
       ? { status: 'added', value: newValue }
-      : { status: 'deleted', value: oldValue };
+      : { status: 'removed', value: oldValue };
     const { value, status } = data;
     node.status = status;
     if (value instanceof Object && !Array.isArray(value)) {
@@ -28,11 +28,11 @@ const processNode = (key, o1, o2, childrenDiffFunc) => {
       const obj = (oldValue instanceof Object)
         ? oldValue
         : newValue;
-      node.status = 'changed';
+      node.status = 'updated';
       node.children = childrenDiffFunc(obj, obj);
     }
   } else {
-    const status = (oldValue === newValue) ? 'unchanged' : 'changed';
+    const status = (oldValue === newValue) ? 'unchanged' : 'updated';
     node.status = status;
   }
   return node;

@@ -1,19 +1,19 @@
 const prefixes = {
   added: '  + ',
-  deleted: '  - ',
+  removed: '  - ',
   unchanged: '    ',
 };
 
 const formatObj = (ind, status, key, oldV, newV, children) => {
-  if (status === 'changed') {
+  if (status === 'updated') {
     if (oldV instanceof Object) {
       return `
-${ind}${prefixes.deleted}${key}: {${children}
+${ind}${prefixes.removed}${key}: {${children}
 ${prefixes.unchanged}${ind}}
 ${ind}${prefixes.added}${key}: ${newV}`;
     }
     return `
-${ind}${prefixes.deleted}${key}: ${oldV}
+${ind}${prefixes.removed}${key}: ${oldV}
 ${ind}${prefixes.added}${key}: {${children}
 ${prefixes.unchanged}${ind}}`;
   }
@@ -27,14 +27,14 @@ const formatPrimitive = {
   added: (ind, key, _oldV, newV) => `
 ${ind}${prefixes.added}${key}: ${newV}`,
 
-  deleted: (ind, key, oldV) => `
-${ind}${prefixes.deleted}${key}: ${oldV}`,
+  removed: (ind, key, oldV) => `
+${ind}${prefixes.removed}${key}: ${oldV}`,
 
   unchanged: (ind, key, oldV) => `
 ${ind}${prefixes.unchanged}${key}: ${oldV}`,
 
-  changed: (ind, key, oldV, newV) => `
-${ind}${prefixes.deleted}${key}: ${oldV}
+  updated: (ind, key, oldV, newV) => `
+${ind}${prefixes.removed}${key}: ${oldV}
 ${ind}${prefixes.added}${key}: ${newV}`,
 };
 
