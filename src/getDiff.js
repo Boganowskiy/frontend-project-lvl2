@@ -1,6 +1,6 @@
 import getObjectsDiff from './getObjectDiff.js';
 import parseFile from './parseFile.js';
-import stylish from './stylish.js';
+import stylish from './formatters/stylish.js';
 
 const getDiff = (file1, file2, format = stylish) => {
   const file1ContentObj = parseFile(file1);

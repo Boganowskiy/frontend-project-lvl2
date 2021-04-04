@@ -1,6 +1,6 @@
 import { Command } from 'commander';
 import getDiff from './getDiff.js';
-import stylish from './stylish.js';
+import stylish from './formatters/stylish.js';
 
 const program = new Command();
 
