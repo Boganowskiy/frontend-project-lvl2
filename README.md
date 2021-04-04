@@ -5,3 +5,5 @@
 
 [Asciinema с результатом сравнения двух плоских json файлов](https://asciinema.org/a/sSmm5kom4FD3F3O70LU2UzAOl)  
 [Asciinema с результатом сравнения двух плоских yml файлов](https://asciinema.org/a/8TIZjB3m4mvLWMFoi0zmPzYEZ)
+
+[Asciinema с демонстрацией использования формата по умолчанию и формата plain сравнения двух файлов](https://asciinema.org/a/Ev2dibdmrS94lcvmJFbTGK8lX)  
