@@ -4,16 +4,16 @@ const prefixes = {
   unchanged: '    ',
 };
 
-const formatObj = (ind, status, key, oldV, newV, children) => {
+const formatObj = (ind, status, key, value, newV, children) => {
   if (status === 'updated') {
-    if (oldV instanceof Object) {
+    if (value instanceof Object) {
       return `
 ${ind}${prefixes.removed}${key}: {${children}
 ${prefixes.unchanged}${ind}}
 ${ind}${prefixes.added}${key}: ${newV}`;
     }
     return `
-${ind}${prefixes.removed}${key}: ${oldV}
+${ind}${prefixes.removed}${key}: ${value}
 ${ind}${prefixes.added}${key}: {${children}
 ${prefixes.unchanged}${ind}}`;
   }
@@ -24,37 +24,34 @@ ${prefixes.unchanged}${ind}}`;
 };
 
 const formatPrimitive = {
-  added: (ind, key, _oldV, newV) => `
-${ind}${prefixes.added}${key}: ${newV}`,
+  added: (ind, key, value) => `
+${ind}${prefixes.added}${key}: ${value}`,
 
-  removed: (ind, key, oldV) => `
-${ind}${prefixes.removed}${key}: ${oldV}`,
+  removed: (ind, key, value) => `
+${ind}${prefixes.removed}${key}: ${value}`,
 
-  unchanged: (ind, key, oldV) => `
-${ind}${prefixes.unchanged}${key}: ${oldV}`,
+  unchanged: (ind, key, value) => `
+${ind}${prefixes.unchanged}${key}: ${value}`,
 
-  updated: (ind, key, oldV, newV) => `
-${ind}${prefixes.removed}${key}: ${oldV}
+  updated: (ind, key, value, newV) => `
+${ind}${prefixes.removed}${key}: ${value}
 ${ind}${prefixes.added}${key}: ${newV}`,
 };
 
-const stylish = (ast) => {
+const getStylishFormatted = (ast) => {
   const iter = (node, depth) => {
     const {
-      key, status, oldValue, newValue, children,
+      key, status, value, newValue, children,
     } = node;
     const currentIndent = prefixes.unchanged.repeat(depth);
     if (children) {
-      return formatObj(currentIndent, status, key, oldValue, newValue, children.flatMap((child) => (
+      return formatObj(currentIndent, status, key, value, newValue, children.flatMap((child) => (
         iter(child, depth + 1))).join(''));
     }
-    const oldV = (Array.isArray(oldValue)) ? `[ ${oldValue} ]` : oldValue;
-    const newV = (Array.isArray(newValue)) ? `[ ${newValue} ]` : newValue;
-    return formatPrimitive[status](currentIndent, key, oldV, newV);
+    return formatPrimitive[status](currentIndent, key, value, newValue);
   };
   const resArr = ast.map((child) => iter(child, 0));
   return `{${resArr.join('')}
 }`;
 };
-
-export default stylish;
+export default getStylishFormatted;
