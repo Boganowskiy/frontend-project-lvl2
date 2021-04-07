@@ -13,6 +13,7 @@ const filepath1 = getFixturePath('file1.json');
 const filepath2 = getFixturePath('file2.json');
 const expectedStylishResultFilepath = getFixturePath('stylishResult.txt');
 const expectedPlainResultFilepath = getFixturePath('plainResult.txt');
+const expectedJSONResultFilepath = getFixturePath('jsonResult.txt');
 
 test('check jsons files with stylish format', () => {
   const expectedResultContent = readFile(expectedStylishResultFilepath);
@@ -26,6 +27,12 @@ test('check jsons files with plain format', () => {
   expect(result).toBe(expectedResultContent);
 });
 
+test('check jsons files with json format', () => {
+  const expectedResultContent = readFile(expectedJSONResultFilepath);
+  const result = getDiff(filepath1, filepath2, 'json');
+  expect(result).toBe(expectedResultContent);
+});
+
 test('check yaml files with stylish format', () => {
   const expectedResultContent = readFile(expectedStylishResultFilepath);
   const result = getDiff(filepath1, filepath2, 'stylish');
@@ -35,5 +42,11 @@ test('check yaml files with stylish format', () => {
 test('check yaml files with plain format', () => {
   const expectedResultContent = readFile(expectedPlainResultFilepath);
   const result = getDiff(filepath1, filepath2, 'plain');
+  expect(result).toBe(expectedResultContent);
+});
+
+test('check yaml files with json format', () => {
+  const expectedResultContent = readFile(expectedJSONResultFilepath);
+  const result = getDiff(filepath1, filepath2, 'json');
   expect(result).toBe(expectedResultContent);
 });
