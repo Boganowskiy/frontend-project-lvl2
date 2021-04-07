@@ -1,7 +1,5 @@
-import { Command } from 'commander';
+import program from 'commander';
 import getDiff from './getDiff.js';
-
-const program = new Command();
 
 program
   .version('0.1')

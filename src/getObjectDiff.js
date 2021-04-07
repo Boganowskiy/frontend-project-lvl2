@@ -40,8 +40,9 @@ const processNode = (key, oldValue, newValue, objectProcessFunc) => {
 const getObjectsDiff = (obj1, obj2) => {
   const keys1 = Object.keys(obj1);
   const keys2 = Object.keys(obj2);
-  const keys = _.union(keys1, keys2).sort();
-  const result = keys.map((key) => {
+  const keys = _.union(keys1, keys2);
+  const sortedKeys = _.sortBy(keys);
+  const result = sortedKeys.map((key) => {
     const oldValue = obj1[key];
     const newValue = obj2[key];
     if (!(_.has(obj1, key)) || !(_.has(obj2, key))) {

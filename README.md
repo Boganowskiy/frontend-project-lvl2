@@ -7,3 +7,5 @@
 [Asciinema с результатом сравнения двух плоских yml файлов](https://asciinema.org/a/8TIZjB3m4mvLWMFoi0zmPzYEZ)
 
 [Asciinema с демонстрацией использования формата по умолчанию и формата plain сравнения двух файлов](https://asciinema.org/a/Ev2dibdmrS94lcvmJFbTGK8lX)  
+
+[Asciinema с демонстрацией вывода результата сравнения двух файлов в формат json](https://asciinema.org/a/uanR8X8prKymBlkxS7MKlczWD)  
