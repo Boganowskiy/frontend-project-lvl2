@@ -2,24 +2,17 @@ import _ from 'lodash';
 
 const isComplexValue = (value) => value instanceof Object && !Array.isArray(value);
 
-const processLeafNode = (key, oldValue, newValue) => {
-  const node = { key };
-  if (_.isEqual(oldValue, newValue)) {
-    node.status = 'unchanged';
-    node.value = oldValue;
-  } else {
-    node.status = 'updated';
-    node.value = oldValue;
-    node.newValue = newValue;
-  }
+const getValue = (value) => ((Array.isArray(value)) ? `[ ${value} ]` : value);
 
-  if (Array.isArray(oldValue) || Array.isArray(newValue)) {
-    node.value = `[ ${oldValue} ]`;
-    if (node.status === 'updated') {
-      node.newValue = `[ ${newValue} ]`;
-    }
+const processLeafNode = (key, oldValue, newValue) => {
+  const value = getValue(oldValue);
+  if (_.isEqual(oldValue, newValue)) {
+    return { key, status: 'unchanged', value };
   }
-  return node;
+  const newVal = getValue(newValue);
+  return {
+    key, status: 'updated', value, newValue: newVal,
+  };
 };
 
 const processNode = (key, oldValue, newValue, objectProcessFunc) => {
@@ -31,10 +24,8 @@ const processNode = (key, oldValue, newValue, objectProcessFunc) => {
       children: objectProcessFunc(oldValue, newValue),
     };
   }
-  node.status = 'updated';
   const obj = (isComplexValue(oldValue)) ? oldValue : newValue;
-  node.children = objectProcessFunc(obj, obj);
-  return node;
+  return { ...node, status: 'updated', children: objectProcessFunc(obj, obj) };
 };
 
 const getObjectsDiff = (obj1, obj2) => {
@@ -46,19 +37,16 @@ const getObjectsDiff = (obj1, obj2) => {
     const oldValue = obj1[key];
     const newValue = obj2[key];
     if (!(_.has(obj1, key)) || !(_.has(obj2, key))) {
-      const node = { key };
-      if (_.has(obj1, key)) {
-        node.value = obj1[key];
-        node.status = 'removed';
-      } else {
-        node.value = obj2[key];
-        node.status = 'added';
-      }
-      const { value } = node;
+      const data = (_.has(obj1, key))
+        ? { value: obj1[key], status: 'removed' }
+        : { value: obj2[key], status: 'added' };
+      const { value, status } = data;
       if (isComplexValue(value)) {
-        return { ...node, children: getObjectsDiff(value, value) };
+        return {
+          key, value, status, children: getObjectsDiff(value, value),
+        };
       }
-      return node;
+      return { key, value, status };
     }
     if (isComplexValue(oldValue) || isComplexValue(newValue)) {
       return processNode(key, oldValue, newValue, getObjectsDiff);
